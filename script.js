@@ -1,32 +1,25 @@
 window.onload = function() {
-    // Get the current time in Pakistan (Karachi time)
-    const now = moment.tz("Asia/Karachi");
-
-    // Logging the current time to debug
-    console.log("Current time in Pakistan:", now.format('YYYY-MM-DD HH:mm:ss'));
+    // Get the current local time
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
 
     const startHour = 17;  // 5:00 PM
     const startMinute = 0;  // Exactly 5 PM
-    const endHour = 0;  // Midnight (12:00 AM) the next day
+    const endHour = 0;  // Midnight (12:00 AM)
     const endMinute = 0;  // Exactly 12:00 AM
 
-    // Get today's start time (5:00 PM today) and tomorrow's midnight (12:00 AM)
-    const todayStart = moment.tz("Asia/Karachi").set({ hour: startHour, minute: startMinute, second: 0 });
-    const nextDayEnd = moment.tz("Asia/Karachi").add(1, 'days').set({ hour: endHour, minute: endMinute, second: 0 });
-
-    // Logging the calculated times to debug
-    console.log("Start time (5:00 PM today):", todayStart.format('YYYY-MM-DD HH:mm:ss'));
-    console.log("End time (12:00 AM tomorrow):", nextDayEnd.format('YYYY-MM-DD HH:mm:ss'));
-
-    // Check if the current time is between 5:00 PM today and 12:00 AM the next day
-    if (now.isBetween(todayStart, nextDayEnd, null, '[]')) {
+    // Check if the current time is between 5:00 PM today and 12:00 AM (midnight)
+    // Case 1: If it's after 5:00 PM today and before midnight
+    // Case 2: If it's after midnight but before 12:00 AM (which we check by checking if hours < 12).
+    if (
+        (hours > startHour || (hours === startHour && minutes >= startMinute)) && 
+        (hours < endHour || (hours === endHour && minutes < endMinute))
+    ) {
         document.body.style.display = "block";  // Show the website
-        console.log("Website is visible.");
     } else {
         document.body.style.display = "none";  // Hide the website
-        alert("This website is only available between 5:00 PM and 12:00 AM Pakistan Time.");
-        console.log("Website is hidden.");
+        alert("This website is only available between 5:00 PM and 12:00 AM local time.");
     }
 };
-
 
