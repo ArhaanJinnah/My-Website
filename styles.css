@@ -1,119 +1,150 @@
-/* Basic reset */
-* {
+/* General body and layout */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: black;
+    color: white;
+    text-align: center;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
-}
-
-/* Book container */
-.book {
-    width: 400px;
-    height: 300px;
-    perspective: 1500px;
-    cursor: pointer;
-    position: relative;
-}
-
-/* Cover */
-.cover {
-    background-color: #f28b82;
-    color: white;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
+    position: relative;
+    overflow: hidden; /* Prevent scrollbars due to confetti overflow */
+}
+
+/* Header */
+header {
+    background-color: #ff4081;
+    color: white;
+    padding: 15px 30px;
+    width: 100%;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Pacifico', cursive;
+    position: absolute;
+    top: 0; /* Position at the top */
+    left: 0;
+    z-index: 200; /* Ensure it stays above confetti */
+}
+
+/* Footer */
+footer {
+    background-color: #ff4081;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 1rem;
+    z-index: 200; /* Ensure footer stays above confetti */
+}
+
+/* Birthday Card */
+.birthday-card {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 230px;
+    height: 300px;
+    perspective: 1500px; /* Add perspective for the 3D effect */
+    cursor: pointer;
+}
+
+/* Card (Front and Back) */
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s ease; /* Flip animation */
+}
+
+.card-front, .card-back {
     position: absolute;
     width: 100%;
-    backface-visibility: hidden;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    transform: rotateY(0deg);
-}
-
-.cover h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.cover p {
-    font-size: 18px;
-}
-
-/* Pages */
-.page {
-    position: absolute;
-    top: 0;
-    width: 50%;
     height: 100%;
-    background-color: #fff;
-    color: #333;
-    padding: 20px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    backface-visibility: hidden; /* Hide the backside when flipped */
     border-radius: 10px;
-    backface-visibility: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    color: white;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content */
+}
+
+/* Front of the card */
+.card-front {
+    background-color: #ff4081;
+    z-index: 2; /* Front page on top */
     justify-content: center;
-    align-items: center;
-    opacity: 0;
-}
-
-/* Left page */
-.page-left {
-    left: 0;
-    transform-origin: right;
-    transform: rotateY(-180deg);
-    transition: transform 1s, opacity 1s;
-}
-
-/* Right page */
-.page-right {
-    right: 0;
-    transform-origin: left;
-    transform: rotateY(180deg);
-    transition: transform 1s, opacity 1s;
-}
-
-/* Page content styling */
-.content {
     text-align: center;
 }
 
-.content h2 {
-    font-size: 30px;
-    margin-bottom: 20px;
+/* Back of the card */
+.card-back {
+    background-color: #e1bee7;
+    transform: rotateY(180deg); /* Initially hidden */
+    z-index: 1; /* Back page behind */
+    text-align: left;
+    overflow-y: auto; /* Allow scrolling if the content overflows */
+    padding: 15px;
 }
 
-.content p {
-    font-size: 18px;
+/* Flip the card */
+.birthday-card.flip .card {
+    transform: rotateY(180deg); /* Flip the entire card */
 }
 
-.birthday-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
+/* Header text */
+h3 {
+    font-family: 'Lobster', cursive;
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 10px;
 }
 
-/* Open book effect */
-.book.open .cover {
-    transform: rotateY(-180deg);
+/* Paragraph text */
+p {
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.4;
 }
 
-.book.open .page-left {
-    transform: rotateY(0deg);
-    opacity: 1;
+/* Signature text */
+.signature {
+    text-align: right;
+    color: #333;
+    font-size: 0.9rem;
+    font-family: 'Pacifico', cursive;
 }
 
-.book.open .page-right {
-    transform: rotateY(0deg);
-    opacity: 1;
+/* Importing fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Pacifico&family=Roboto:wght@300;400&display=swap');
+
+/* Confetti Canvas */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Ensure it spans the viewport width */
+    height: 100vh; /* Ensure it spans the viewport height */
+    pointer-events: none; /* Allow clicks to pass through confetti to the card */
+    z-index: 1000; /* Ensure confetti is above all content */
+}
+
+/* Optional: Style for the container to center the card better */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%);
 }

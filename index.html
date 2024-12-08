@@ -3,33 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Book</title>
+    <title>Happy Birthday Queeny</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js" defer></script> <!-- Link to external JavaScript file -->
 </head>
 <body>
-    <div class="book" onclick="toggleBook()">
-        <!-- Cover Page -->
-        <div class="cover">
-            <h2>Happy Birthday!</h2>
-            <p>Click to Open the Book</p>
-        </div>
+    <header>
+        <h1>🎂Happy Birthday Queeny🎂</h1>
+    </header>
 
-        <!-- Left Page -->
-        <div class="page page-left">
-            <div class="content">
-                <img src="image.png" alt="Birthday Image" class="birthday-image">
+    <main>
+        <!-- Birthday Card -->
+        <div class="birthday-card" id="birthdayCard">
+            <div class="card">
+                <div class="card-front">
+                    <h3>Happy 17th Birthday, Queeny! 🎉✨</h3>
+                    <p>Click to flip the card and see your birthday message!</p>
+                </div>
+                <div class="card-back">
+                    <p>How does it feel knowing you're just one year away from officially being an adult? (At least legally!)</p>
+                    <p>I hope you have an amazing time celebrating this special day. Wishing you all the fun, joy, and love you deserve!</p>
+                    <p class="signature">Best regards,<br>Arhaan</p>
+                </div>
             </div>
         </div>
+    </main>
 
-        <!-- Right Page -->
-        <div class="page page-right">
-            <div class="content">
-                <h2>Page 2</h2>
-                <p>Happy Birthday! Wishing you a day full of joy and celebrations.</p>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <footer>
+        <p>© 2024 Happy Birthday Queeny</p>
+    </footer>
 </body>
 </html>
