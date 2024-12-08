@@ -44,32 +44,34 @@ const card = document.getElementById('birthdayCard');
 card.addEventListener('click', () => {
     card.classList.toggle('flip');
 });
-// Set the target time in Suriname (11:59 PM, UTC-3)
-const targetTimeSuriname = new Date();
-targetTimeSuriname.setHours(23);  // 11 PM
-targetTimeSuriname.setMinutes(59);  // 59 minutes
-targetTimeSuriname.setSeconds(0);  // 0 seconds
-targetTimeSuriname.setMilliseconds(0);  // 0 milliseconds
 
-// Function to get the current time in Suriname (UTC-3)
-function getSurinameTime() {
-    const currentTime = new Date();
-    const surinameTime = new Date(currentTime.toLocaleString('en-US', { timeZone: 'America/Paramaribo' }));
-    return surinameTime;
+// Set the target date and time in UTC (9/12/2024, 3:00 AM UTC)
+const targetTimeUTC = new Date(Date.UTC(2024, 11, 9, 3, 0, 0)); // 3:00 AM UTC
+
+// Function to get the current UTC time
+function getUTCTime() {
+    return new Date(); // JavaScript Date automatically uses UTC for Date comparisons
 }
 
-// Function to calculate the remaining time until the target time in Suriname
+// Function to check if the site should be live
+function isSiteLive() {
+    const currentUTCTime = getUTCTime();
+    return currentUTCTime >= targetTimeUTC;
+}
+
+// Function to calculate the remaining time until the target time in UTC
 function getRemainingTime() {
-    const currentSurinameTime = getSurinameTime();
-    const remainingTime = targetTimeSuriname - currentSurinameTime;
+    const currentUTCTime = getUTCTime();
+    const remainingTime = targetTimeUTC - currentUTCTime;
     return remainingTime;
 }
 
-// Function to format the remaining time (in milliseconds) into minutes and seconds
+// Function to format the remaining time (in milliseconds) into hours, minutes, and seconds
 function formatRemainingTime(remainingTime) {
-    const minutes = Math.floor(remainingTime / 1000 / 60);
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((remainingTime / 1000) % 60);
-    return { minutes, seconds };
+    return { hours, minutes, seconds };
 }
 
 // Get all the elements to hide initially
@@ -81,22 +83,31 @@ const countdownElement = document.getElementById('countdown');
 // Apply 'hidden' class to all elements initially
 elementsToHide.forEach(element => element.classList.add('hidden'));
 
-// Update the countdown every second
-const timerInterval = setInterval(function() {
-    // Get the remaining time in Suriname time
-    const remainingTime = getRemainingTime();
+// Check if the site is already live
+if (isSiteLive()) {
+    // Make the site live immediately
+    document.getElementById('timerOverlay').style.display = 'none'; // Hide the timer overlay
+    elementsToHide.forEach(element => element.classList.remove('hidden')); // Show all content
+    document.body.style.pointerEvents = 'auto'; // Enable interaction with the page
+} else {
+    // Update the countdown every second
+    const timerInterval = setInterval(function() {
+        // Check again if the site should be live
+        if (isSiteLive()) {
+            clearInterval(timerInterval);
+            document.getElementById('timerOverlay').style.display = 'none'; // Hide the timer overlay
+            elementsToHide.forEach(element => element.classList.remove('hidden')); // Show all content
+            document.body.style.pointerEvents = 'auto'; // Enable interaction with the page
+        } else {
+            // Get the remaining time
+            const remainingTime = getRemainingTime();
+            // Format the remaining time
+            const { hours, minutes, seconds } = formatRemainingTime(remainingTime);
+            countdownElement.textContent = `${hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`; // Update countdown
+        }
+    }, 1000);
 
-    if (remainingTime <= 0) {
-        clearInterval(timerInterval);
-        document.getElementById('timerOverlay').style.display = 'none'; // Hide the timer overlay
-        elementsToHide.forEach(element => element.classList.remove('hidden')); // Show all content
-        document.body.style.pointerEvents = 'auto'; // Enable interaction with the page
-    } else {
-        // Format the remaining time
-        const { minutes, seconds } = formatRemainingTime(remainingTime);
-        countdownElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`; // Update countdown
-    }
-}, 1000);
+    // Initially disable interaction with the page
+    document.body.style.pointerEvents = 'none'; // Disable clicks and interactions
+}
 
-// Initially disable interaction with the page
-document.body.style.pointerEvents = 'none'; // Disable clicks and interactions
