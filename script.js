@@ -1,5 +1,4 @@
-function toggleCard() {
-    const card = document.querySelector('.card');
-    card.classList.toggle('flipped');
+function toggleBook() {
+    const book = document.querySelector('.book');
+    book.classList.toggle('open');
 }
-

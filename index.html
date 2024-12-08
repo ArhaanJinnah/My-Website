@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Card</title>
+    <title>Birthday Book</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="card-container">
-        <div class="card" onclick="toggleCard()">
-            <div class="card-front">
-                <h2>Click to Open</h2>
+    <div class="book" onclick="toggleBook()">
+        <!-- Cover Page -->
+        <div class="cover">
+            <h2>Happy Birthday!</h2>
+            <p>Click to Open the Book</p>
+        </div>
+
+        <!-- Left Page -->
+        <div class="page page-left">
+            <div class="content">
+                <img src="image.png" alt="Birthday Image" class="birthday-image">
             </div>
-            <div class="card-back">
-                <textarea placeholder="Write something..."></textarea>
+        </div>
+
+        <!-- Right Page -->
+        <div class="page page-right">
+            <div class="content">
+                <h2>Page 2</h2>
+                <p>Happy Birthday! Wishing you a day full of joy and celebrations.</p>
             </div>
         </div>
     </div>
