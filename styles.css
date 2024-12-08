@@ -153,5 +153,23 @@ canvas {
     display: none;
 }
 
+/* Mobile-specific styles for better spacing */
+@media (max-width: 480px) {
+    header, footer {
+        font-size: 1.2rem; /* Slightly smaller font for smaller screens */
+    }
 
+    .birthday-card {
+        width: 160px; /* Even smaller card for very small screens */
+        height: 220px;
+    }
+
+    .card-front h3, .card-back p {
+        font-size: 1rem; /* Adjust text size to fit better */
+    }
+
+    .signature {
+        font-size: 0.8rem; /* Smaller signature font */
+    }
+}
 
